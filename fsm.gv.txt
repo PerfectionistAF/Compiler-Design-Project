@@ -1,0 +1,38 @@
+digraph DFA {
+	fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Andalus", fontsize="10"]
+	edge [fontname="Andalus",fontsize="10"]
+	rankdir=LR;
+	node [shape = doublecircle]; Done;
+	node [shape = circle];
+	Start -> Start [label = "whitespace"];
+	Start -> open_bracket [label = "("];
+	open_bracket -> Done [label="[other]"];
+	Start -> close_bracket [label = ")"];
+	close_bracket -> Done [label="[other]"];
+	Start -> NUM [label = "digit"];
+	NUM -> NUM [label="digit"];
+	NUM -> Done [label="[other]"];
+	Start -> ID [label = "letter"];
+	ID ->  ID [label="letter"];
+	ID -> Done [label="[other]"];
+	Start -> equal [label="="];
+	equal -> Done [label="[other]"];
+	Start -> less_than [label = "<"];
+	less_than -> Done [label="[other]"];
+	Start -> greater_than [label = ">"];
+	greater_than -> Done [label="[other]"];
+	less_than -> less_than_or_equal [label = "="];
+	less_than_or_equal -> Done [label="[other]"];
+	greater_than -> greater_than_or_equal [label = "="];
+	greater_than_or_equal -> Done [label="[other]"];
+	Start -> OR [label = "|"];
+	OR -> Done [label="|"];
+	OR -> Stuck [label="[other]"];
+	Start -> AND [label = "&"];
+	AND -> Done [label="&"];
+	AND -> Stuck [label="[other]"];
+	Start -> NOT [label = "!"];
+	NOT -> Stuck [label="[other]"];
+	Start -> Stuck [label = "else"];
+}

@@ -1,0 +1,10 @@
+digraph DFA {
+	rankdir=LR size="8,5"
+	node [shape=doublecircle]
+	Done
+	node [shape=circle]
+	Start
+	Start -> Start [label=whitespace]
+	Stuck
+	Start -> Stuck [label=else]
+}
