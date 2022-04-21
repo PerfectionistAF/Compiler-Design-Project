@@ -4,7 +4,48 @@ digraph DFA {
 	Done
 	node [shape=circle]
 	Start
+	open_bracket
+	close_bracket
+	NUM
+	ID
+	equal
+	less_than
+	greater_than
+	less_than_or_equal
+	greater_than_or_equal
+	OR
+	AND
+	NOT
+	Invalid_token
 	Start -> Start [label=whitespace]
-	Stuck
-	Start -> Stuck [label=else]
+	Start -> open_bracket [label="("]
+	open_bracket -> Done [label="[other]"]
+	Start -> close_bracket [label=")"]
+	close_bracket -> Done [label="[other]"]
+	Start -> NUM [label=digit]
+	NUM -> NUM [label=digit]
+	NUM -> Done [label="[other]"]
+	Start -> ID [label=letter]
+	ID -> ID [label=letter]
+	ID -> Done [label="[other]"]
+	Start -> equal [label="="]
+	equal -> Done [label="[other]"]
+	Start -> less_than [label="<"]
+	less_than -> Done [label="[other]"]
+	Start -> greater_than [label=">"]
+	greater_than -> Done [label="[other]"]
+	less_than -> less_than_or_equal [label="="]
+	less_than_or_equal -> Done [label="[other]"]
+	greater_than -> greater_than_or_equal [label="="]
+	greater_than_or_equal -> Done [label="[other]"]
+	Start -> OR [label="|"]
+	OR -> Done [label="|"]
+	OR -> Invalid_token [label="[other]"]
+	Start -> AND [label="&"]
+	AND -> Done [label="&"]
+	AND -> Invalid_token [label="[other]"]
+	Start -> NOT [label="!"]
+	NOT -> Invalid_token [label="[other]"]
+	Start -> Invalid_token [label=else]
+	Invalid_token -> Done
 }
