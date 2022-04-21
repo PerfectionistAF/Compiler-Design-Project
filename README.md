@@ -1,7 +1,9 @@
 # Compiler-Design-Project
 
 # PHASE 1 
-To set up project on PyCharm, the following need to be installed:
+To set up project on PyCharm, download zip, extract and check working of PyCharm https://www.jetbrains.com/pycharm/ 
+the following need to be installed:
+
 pip (Package Installer for Python)
 graphviz
 pydot
