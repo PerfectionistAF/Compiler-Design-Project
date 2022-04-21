@@ -28,11 +28,12 @@ digraph DFA {
 	greater_than_or_equal -> Done [label="[other]"];
 	Start -> OR [label = "|"];
 	OR -> Done [label="|"];
-	OR -> Stuck [label="[other]"];
+	OR -> Invalid_token [label="[other]"];
 	Start -> AND [label = "&"];
 	AND -> Done [label="&"];
-	AND -> Stuck [label="[other]"];
+	AND -> Invalid_token [label="[other]"];
 	Start -> NOT [label = "!"];
-	NOT -> Stuck [label="[other]"];
-	Start -> Stuck [label = "else"];
+	NOT -> Invalid_token[label="[other]"];
+	Start -> Invalid_token [label = "else"];
+	Invalid_token -> Done;
 }
