@@ -1,7 +1,8 @@
 # Compiler-Design-Project
 
 # PHASE 1 
-To set up project on PyCharm, download zip, extract and check working of PyCharm https://www.jetbrains.com/pycharm/ 
+To set up project on PyCharm, download zip, extract,copy code into a new Pycharm project 
+and check working of PyCharm https://www.jetbrains.com/pycharm/ 
 the following need to be installed:
 
 pip (Package Installer for Python)
