@@ -1,0 +1,112 @@
+Digraph DFA2 {
+    fontname="Helvetica,Arial,sans-serif"
+	node [fontname="Andalus", fontsize="10"]
+	edge [fontname="Andalus",fontsize="10"]
+	rankdir=LR;
+	node [shape = doublecircle]; ID2; NUM2;
+	node [shape = circle];
+
+	START -> START [label="white space"];
+	START -> ID1 [label="letter"];
+	START -> NUM1 [label="white space"];
+	START -> NOT1 [label="!"];
+
+	ID1 -> "=" [label=" = "];
+	ID1 -> ">" [label=" > "];
+	ID1 -> "<" [label=" < "];
+	ID1 -> ID1 [label="letter"];
+	ID1 -> AND1 [label="&"];
+	ID1 -> OR1 [label="|"];
+
+	NUM1 -> "=" [label=" = "];
+	NUM1 -> ">" [label=" > "];
+	NUM1 -> "<" [label=" < "];
+	NUM1 -> NUM1 [label="digit"];
+	NUM1 -> AND1 [label="&"];
+	NUM1 -> OR1 [label="|"];
+
+	NOT1 -> ID1 [label="letter"];
+	NOT1 -> NUM1 [label="digit"];
+	NOT1 -> "=" [label=" = "];
+	NOT1 -> ">" [label=" > "];
+	NOT1 -> "<" [label=" < "];
+
+	"=" -> ID2 [label=" letter "];
+	">" -> ID2 [label=" letter "];
+	"<" -> ID2 [label=" letter "];
+	">=" -> ID2 [label=" letter "];
+	"<=" -> ID2 [label=" letter "];
+
+	AND2 -> ID2 [label="letter"];
+	OR2 -> ID2 [label="letter"];
+	NOT2 -> ID2 [label="letter"];
+	ID2 -> ID2 [label="letter"];
+
+	">" -> ">=" [label=" = "];
+	"<" -> "<=" [label=" = "];
+
+
+	"=" -> NUM2 [label=" digit "];
+	">" -> NUM2 [label=" digit "];
+	"<" -> NUM2 [label=" digit "];
+	">=" -> NUM2 [label=" digit "];
+	"<=" -> NUM2 [label=" digit "];
+	AND2 -> NUM2 [label="digit"];
+	OR2 -> NUM2 [label="digit"];
+	NOT2 -> NUM2 [label="digit"];
+	NUM2 -> NUM2 [label="digit"];
+
+	AND1 -> AND2 [label="&"];
+	OR1 -> OR2 [label="|"];
+
+
+	"=" -> NOT2 [label=" ! "];
+	">" -> NOT2 [label=" ! "];
+	"<" -> NOT2 [label=" ! "];
+	">=" -> NOT2 [label=" ! "];
+	"<=" -> NOT2 [label=" ! "];
+	AND2 -> NOT2 [label="!"];
+	OR2 -> NOT2 [label="!"];
+
+	ID2 -> AND1 [label="&"];
+	ID2 -> OR1 [label="|"];
+	NUM2 -> AND1 [label="&"];
+	NUM2 -> OR1 [label="|"];
+	OR2 -> ID1 [label="letter"];
+	AND2 -> NUM1 [label="digit"];
+	OR2 -> NUM1 [label="digit"];
+
+	START -> Invalid_token [label="[other]"];
+    ID1 -> Invalid_token [label="[other]"];
+    NUM1 -> Invalid_token [label="[other]"];
+    NOT1 -> Invalid_token [label="[other]"];
+    "=" -> Invalid_token [label="[other]"];
+    ">" -> Invalid_token [label="[other]"];
+    "<" -> Invalid_token [label="[other]"];
+    ">=" -> Invalid_token [label="[other]"];
+    "<=" -> Invalid_token [label="[other]"];
+    ID2 -> Invalid_token [label="[other]"];
+    NUM2 -> Invalid_token [label="[other]"];
+    AND1 -> Invalid_token [label="[other]"];
+    OR1 -> Invalid_token [label="[other]"];
+    AND2 -> Invalid_token [label="[other]"];
+    OR2 -> Invalid_token [label="[other]"];
+    NOT2 -> Invalid_token [label="[other]"];
+    ANDE1 -> Invalid_token [label="[other]"];
+    ANDE2 -> Invalid_token [label="[other]"];
+    ORE1 -> Invalid_token [label="[other]"];
+    ORE2 -> Invalid_token [label="[other]"];
+
+    ID2 -> ANDE1 [label=" & "];
+    NUM2 -> ANDE1 [label=" & "];
+    ID2 -> ORE1 [label=" | "];
+    NUM2 -> ORE1 [label=" | "];
+    NUM2 -> ORE1 [label=" | "];
+    ANDE1 -> ANDE2 [label=" & ";]
+    ORE1 -> ORE2 [label=" | "];
+    ANDE2 -> ID1 [label=" letter "];
+    ANDE2 -> NUM1 [label=" digit "];
+    ORE2 -> ID1 [label=" letter "];
+    ORE2 -> NUM1 [label=" digit "];
+
+}
