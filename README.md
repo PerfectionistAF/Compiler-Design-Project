@@ -29,3 +29,7 @@ DFA_OP_button: shows entire operations DFA as pdf  (with every whitespace , new 
 DFA_Strings_button: shows accepted strings as pdf
 
 # PHASE 2
+
+# Documentation summary
+
+# Embedding Compiler to IDE
