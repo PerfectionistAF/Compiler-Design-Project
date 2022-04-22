@@ -7,6 +7,12 @@ import graphviz
 import graphviz as gv
 import re
 from tkinter import *
+import os
+
+
+if os.path.exists('C:\\Users\\Seif Eldin Sameh\\PycharmProjects\\pythonProject5\\fsm2.gv.pdf'):
+    os.remove('C:\\Users\\Seif Eldin Sameh\\PycharmProjects\\pythonProject5\\fsm2.gv.pdf')
+    os.remove('C:\\Users\\Seif Eldin Sameh\\PycharmProjects\\pythonProject5\\fsm2.gv')
 
 # Design
 # this is a function to get the user input from the text input box
@@ -14,7 +20,7 @@ from graphviz import Digraph
 
 # NUM and ID
 
-IDENTIFIER = re.compile(r"^[a-zA-z]+\Z")
+IDENTIFIER = re.compile(r"^[^\d\W]\w*\Z")
 NUM = re.compile(r"^[\d]+$\Z")
 
 # OP
@@ -24,8 +30,8 @@ LESS_THAN = re.compile(r"^[<]{1}$\Z")
 GREATER_THAN = re.compile(r"^[>]{1}$\Z")
 GREATER_THAN_OR_EQUAL = re.compile(r"^>=$\Z")
 LESS_THAN_OR_EQUAL = re.compile(r"^<=$\Z")
-OR = re.compile(r"(\|\|){2}\Z")
-AND = re.compile(r"(&&){2}\Z")
+OR = re.compile(r"(\|\|){1}\Z")
+AND = re.compile(r"(&&){1}\Z")
 NOT = re.compile(r"[!]{1}\Z")
 OPEN_BRACKET = re.compile(r"[\(]{1}\Z")
 CLOSE_BRACKET = re.compile(r"[\)]{1}\Z")
@@ -46,48 +52,128 @@ def Tokens_btnClickFunction(userInput):
 
     strings = userInput.split()
     token = []  # initialise token list
+    DFA = gv.Digraph('DFA2', filename='fsm2.gv')
+    DFA.node('START', 'START')
+    pre = 'START'
+    def nsq(pre,cs,string):
+        if cs == 'NUM1' or cs == 'NUM2':
+            DFA.node(cs, cs, shape='doublecircle')
+        elif cs == 'ID1' or cs == 'ID2':
+            DFA.node(cs, cs, shape='doublecircle')
+        else:
+            DFA.node(cs, cs)
+        DFA.edge(pre, cs, label=string)
+        return cs
+
     for string in strings:
-        if re.fullmatch(IDENTIFIER, string):
+        if pre == 'Stuck':
+            pre = nsq(pre, 'Stuck', string)
+        elif re.fullmatch(IDENTIFIER, string):
             print('IDENTIFIER', ',', string)
             token.append(['IDENTIFIER', string])
+            if pre == 'START' or pre == 'ID1' or pre == 'NOT1' or pre == 'AND2' or pre == 'OR2' or pre == 'NOT2':
+                pre = nsq(pre, 'ID1', string)
+            elif pre == 'ID2' or pre == 'NOT2' or pre == '=' or pre == '>'or pre == '<' or pre == '>='or pre == '<='or pre == 'AND2'or pre == 'OR2':
+                pre = nsq(pre, 'ID2', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
+
         elif re.fullmatch(NUM, string):
             print('NUM', ',', string)
             token.append(['NUM', string])
+            if pre == 'START' or pre == 'NUM1' or pre == 'NOT1' or pre == 'AND2' or pre == 'OR2' or pre == 'NOT2':
+                pre = nsq(pre, 'NUM1', string)
+            elif pre == 'NUM2' or pre == 'NOT2' or pre == '=' or pre == '>'or pre == '<' or pre == '>='or pre == '<='or pre == 'AND2'or pre == 'OR2':
+                pre = nsq(pre, 'NUM2', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(EQUAL, string):
             print('EQUAL', ',', string)
             token.append(['EQUAL', string])
+            if pre == 'ID1' or pre == 'NUM1':
+                pre = nsq(pre, '=', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(LESS_THAN, string):
             print('LESS_THAN', ',', string)
             token.append(['LESS_THAN', string])
+            if pre == 'ID1' or pre == 'NUM1':
+                pre = nsq(pre, '<', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(GREATER_THAN, string):
             print('GREATER_THAN', ',', string)
             token.append(['GREATER_THAN', string])
+            if pre == 'ID1' or pre == 'NUM1':
+                pre = nsq(pre, '>', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(GREATER_THAN_OR_EQUAL, string):
             print('GREATER_THAN_OR_EQUAL', ',', string)
             token.append(['GREATER_THAN_OR_EQUAL', string])
+            if pre == 'ID1' or pre == 'NUM1'or pre == '>':
+                pre = nsq(pre, '>', string[0])
+                pre = nsq(pre, '>=', string[1])
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(LESS_THAN_OR_EQUAL, string):
             print('LESS_THAN_OR_EQUAL', ',', string)
             token.append(['LESS_THAN_OR_EQUAL', string])
+            if pre == 'ID1' or pre == 'NUM1' or pre == '<':
+                pre = nsq(pre, '<', string[0])
+                pre = nsq(pre, '<=', string[1])
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(OR, string):
             print('OR', ',', string)
             token.append(['OR', string])
+            if pre == 'ID1' or pre == 'NUM1' or pre == 'ID2' or pre == 'NUM2':
+                pre = nsq(pre, 'OR1', string[0])
+                pre = nsq(pre, 'OR2', string[1])
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(AND, string):
             print('AND', ',', string)
             token.append(['AND', string])
+            if pre == 'ID1' or pre == 'NUM1' or pre == 'ID2' or pre == 'NUM2':
+                pre = nsq(pre, 'AND1', string[0])
+                pre = nsq(pre, 'AND2', string[1])
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(NOT, string):
             print('NOT', ',', string)
             token.append(['NOT', string])
+            if pre == 'START':
+                pre = nsq(pre, 'NOT1', string)
+            elif pre == '>=' or pre == '<=' or pre == '>' or pre == '=' or pre =='<' or pre == 'AND2' or pre == 'OR2':
+                pre = nsq(pre, 'NOT2', string)
+            else:
+                pre = nsq(pre, 'Stuck', string)
         elif re.fullmatch(OPEN_BRACKET, string):
             print('OPEN_BRACKET', ',', string)
             token.append(['OPEN_BRACKET', string])
+            pre = nsq(pre, '(', string)
         elif re.fullmatch(CLOSE_BRACKET, string):
             print('CLOSE_BRACKET', ',', string)
             token.append(['CLOSE_BRACKET', string])
+            pre = nsq(pre, ')', string)
         else:
             print('INVALID_TOKEN', ',', string)
             token.append(['INVALID_TOKEN', string])
+            if re.fullmatch(NUM, string[0]):
+                pre = nsq(pre, 'NUM2', string[0])
+                pre = nsq(pre, 'Stuck', string[1:])
+            elif re.fullmatch(IDENTIFIER, string[0]):
+                pre = nsq(pre, 'ID2', string[0])
+                pre = nsq(pre, 'Stuck', string[1:])
+            else:
+                pre = nsq(pre, 'Stuck', string)
+    DFA.view()
     for i in range(len(token)):
         exec('Label%d=Label(token_window,text="%s")\nLabel%d.pack()' % (i, token[i], i))
+
+    #os.remove("fsm2.gv.pdf")
+    #os.remove("fsm2.gv")
 
 
 # click Operations DFA
@@ -113,7 +199,7 @@ def DFA_OP_btnClickFunction():
     f.node('OR')
     f.node('AND')
     f.node('NOT')
-    f.node('Invalid_token')
+    f.node('Stuck')
     f.edge('Start', 'Start', label='whitespace')
     f.edge('Start', 'open_bracket', label='(')
     f.edge('open_bracket', 'Done', label='[other]')
@@ -161,8 +247,8 @@ def DFA_STRING_btnClickFunction():
     DFA = gv.Digraph('DFA2', filename='fsm2.gv')
     DFA.node('START', 'START')
     DFA.node('ID1', 'ID1')
-    DFA.node('NUM1', 'NUM1')
-    DFA.node('NOT1', 'NOT1')
+    DFA.node('NUM1', 'NUM1', shape='doublecircle')
+    DFA.node('NOT1', 'NOT1', shape='doublecircle')
     DFA.node('=', '=')
     DFA.node('>', '>')
     DFA.node('<', '<')
@@ -179,7 +265,7 @@ def DFA_STRING_btnClickFunction():
     DFA.node('ANDE2', 'ANDE2')
     DFA.node('ORE1', 'ORE1')
     DFA.node('ORE2', 'ORE2')
-    DFA.node('Invalid_token', 'Invalid_token')
+    DFA.node('Stuck', 'Stuck')
     #############################################
     DFA.edge('START', 'ID1', label=' letter ')
     DFA.edge('START', 'NUM1', label=' digit ')
@@ -237,26 +323,26 @@ def DFA_STRING_btnClickFunction():
     DFA.edge('AND2', 'NOT2', label=' ! ')
     DFA.edge('OR2', 'NOT2', label=' ! ')
     ############################################
-    DFA.edge('START', 'Invalid_token', label='[other]')
-    DFA.edge('ID1', 'Invalid_token', label='[other]')
-    DFA.edge('NUM1', 'Invalid_token', label='[other]')
-    DFA.edge('NOT1', 'Invalid_token', label='[other]')
-    DFA.edge('=', 'Invalid_token', label='[other]')
-    DFA.edge('>', 'Invalid_token', label='[other]')
-    DFA.edge('<', 'Invalid_token', label='[other]')
-    DFA.edge('>=', 'Invalid_token', label='[other]')
-    DFA.edge('<=', 'Invalid_token', label='[other]')
-    DFA.edge('ID2', 'Invalid_token', label='[other]')
-    DFA.edge('NUM2', 'Invalid_token', label='[other]')
-    DFA.edge('AND1', 'Invalid_token', label='[other]')
-    DFA.edge('OR1', 'Invalid_token', label='[other]')
-    DFA.edge('AND2', 'Invalid_token', label='[other]')
-    DFA.edge('OR2', 'Invalid_token', label='[other]')
-    DFA.edge('NOT2', 'Invalid_token', label='[other]')
-    DFA.edge('ANDE1', 'Invalid_token', label='[other]')
-    DFA.edge('ANDE2', 'Invalid_token', label='[other]')
-    DFA.edge('ORE1', 'Invalid_token', label='[other]')
-    DFA.edge('ORE2', 'Invalid_token', label='[other]')
+    DFA.edge('START', 'Stuck', label='[other]')
+    DFA.edge('ID1', 'Stuck', label='[other]')
+    DFA.edge('NUM1', 'Stuck', label='[other]')
+    DFA.edge('NOT1', 'Stuck', label='[other]')
+    DFA.edge('=', 'Stuck', label='[other]')
+    DFA.edge('>', 'Stuck', label='[other]')
+    DFA.edge('<', 'Stuck', label='[other]')
+    DFA.edge('>=', 'Stuck', label='[other]')
+    DFA.edge('<=', 'Stuck', label='[other]')
+    DFA.edge('ID2', 'Stuck', label='[other]')
+    DFA.edge('NUM2', 'Stuck', label='[other]')
+    DFA.edge('AND1', 'Stuck', label='[other]')
+    DFA.edge('OR1', 'Stuck', label='[other]')
+    DFA.edge('AND2', 'Stuck', label='[other]')
+    DFA.edge('OR2', 'Stuck', label='[other]')
+    DFA.edge('NOT2', 'Stuck', label='[other]')
+    DFA.edge('ANDE1', 'Stuck', label='[other]')
+    DFA.edge('ANDE2', 'Stuck', label='[other]')
+    DFA.edge('ORE1', 'Stuck', label='[other]')
+    DFA.edge('ORE2', 'Stuck', label='[other]')
     ############################################
     DFA.edge('ID2', 'ANDE1', label=' & ')
     DFA.edge('NUM2', 'ANDE1', label=' & ')
@@ -302,10 +388,8 @@ Label(root, text='Logical Operators', bg='#F5F5F5', font=('courier', 9, 'normal'
 input_entry = Entry(root, textvariable=string)
 input_entry.place(x=19, y=58)
 # buttons
-sub_btn= Button(root,text = 'Ok', command = submit)
-sub_btn.place(x=178, y=53)
-Button(root, text='List of Tokens', bg='#E6E6FA', font=('helvetica', 12, 'normal'),
-       command=Tokens_btnClickFunction).place(x=33, y=114)
+sub_btn= Button(root,text='List of Tokens', command = submit, bg='#E6E6FA', font=('helvetica', 12, 'normal'))
+sub_btn.place(x=33, y=114)
 Button(root, text='Operations DFA', bg='#E6E6FA', font=('helvetica', 12, 'normal'), command=DFA_OP_btnClickFunction).place(x=33, y=170)
 Button(root, text='Accepting String DFA', bg='#E6E6FA', font=('helvetica', 12, 'normal'),
        command=DFA_STRING_btnClickFunction).place(x=33, y=227)
@@ -326,3 +410,5 @@ root.mainloop()
 #############################################################################################
 # strings = input('Enter String: ')
 
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
