@@ -1,4 +1,4 @@
-# Compiler-Design-Project
+# TINY Compiler-Design-Project
 
 # PHASE 1 
 To set up project on PyCharm, download zip, extract,copy code into a new Pycharm project 
