@@ -37,6 +37,10 @@ DFA_Strings_button: shows accepted strings as pdf
 
 # PHASE 2
 
-# Documentation summary
+# Tests
+![TINYCOMPILER_1](https://github.com/PerfectionistAF/Compiler-Design-Project/assets/77901496/2f619432-8a1b-4cc8-b6f7-516adbded248)
 
-# Embedding Compiler to IDE
+![TINYCOMPILER_2](https://github.com/PerfectionistAF/Compiler-Design-Project/assets/77901496/4181b9db-baab-4d33-95e2-395d7e1af638)
+
+![TINYCOMPILER_3](https://github.com/PerfectionistAF/Compiler-Design-Project/assets/77901496/06a01571-a7ec-4968-aaa3-7a5853ec75cc)
+
