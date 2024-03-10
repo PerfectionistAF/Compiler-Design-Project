@@ -42,5 +42,5 @@ DFA_Strings_button: shows accepted strings as pdf
 
 ![TINYCOMPILER_2](https://github.com/PerfectionistAF/Compiler-Design-Project/assets/77901496/4181b9db-baab-4d33-95e2-395d7e1af638)
 
-![TINYCOMPILER_3](https://github.com/PerfectionistAF/Compiler-Design-Project/assets/77901496/06a01571-a7ec-4968-aaa3-7a5853ec75cc)
+
 
